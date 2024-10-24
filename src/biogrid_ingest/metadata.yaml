@@ -1,0 +1,12 @@
+# Metadata for the project
+# Uncomment and edit the fields you want to include in the metadata
+# See metadata properties at https://koza.monarchinitiative.org/Ingests/source_config/
+name: 'biogrid'
+
+ingest_title: 'BioGRID'
+ingest_url: 'https://thebiogrid.org/'
+description: 'BioGRID: Database of Protein, Genetic and Chemical Interactions'
+rights: 'https://wiki.thebiogrid.org/doku.php/partners'
+
+# source: 'Possibly replaced by provided_by'
+provided_by: 'biogrid'
