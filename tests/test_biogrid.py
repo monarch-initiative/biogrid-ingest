@@ -1,6 +1,4 @@
-"""
-Unit tests for BioGRID protein links ingest
-"""
+"""Unit tests for BioGRID protein links ingest."""
 
 import pytest
 from koza.utils.testing_utils import mock_koza  # noqa: F401
@@ -8,25 +6,19 @@ from koza.utils.testing_utils import mock_koza  # noqa: F401
 
 @pytest.fixture
 def source_name():
-    """
-    :return: BioGRID source name of BioGRID protein links ingest
-    """
+    """Name of BioGRID protein links ingest."""
     return "biogrid"
 
 
 @pytest.fixture
 def script():
-    """
-    :return: BioGRID path to BioGRID protein links ingest script
-    """
-    return "./src/monarch_ingest/ingests/biogrid/biogrid.py"
+    """Path to BioGRID protein links ingest script."""
+    return "./src/biogrid_ingest/transform.py"
 
 
 @pytest.fixture
 def basic_row():
-    """
-    :return: Test BioGRID interactions data row.
-    """
+    """Generate an example interactions data row."""
     return {
         "ID Interactor A": "entrez gene/locuslink:6416",
         "ID Interactor B": "entrez gene/locuslink:2318",
@@ -54,18 +46,9 @@ def basic_row():
 
 
 @pytest.fixture
-def basic_pl(mock_koza, source_name, basic_row, script, global_table):
-    """
-    Mock Koza run for BioGRID protein links ingest.
-
-    :param mock_koza:
-    :param source_name:
-    :param basic_row:
-    :param script:
-    :param global_table:
-    :return:
-    """
-    return mock_koza(name=source_name, data=basic_row, transform_code=script, global_table=global_table)
+def basic_pl(mock_koza, source_name, basic_row, script):
+    """Create a mock Koza instance using pytest fixtures."""
+    return mock_koza(name=source_name, data=basic_row, transform_code=script)
 
 
 def test_association(basic_pl):
