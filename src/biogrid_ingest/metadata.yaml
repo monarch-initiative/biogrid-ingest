@@ -1,7 +1,7 @@
 # Metadata for the project
 # Uncomment and edit the fields you want to include in the metadata
 # See metadata properties at https://koza.monarchinitiative.org/Ingests/source_config/
-name: 'biogrid'
+name: 'biogrid_gene_to_gene'
 
 ingest_title: 'BioGRID'
 ingest_url: 'https://thebiogrid.org/'

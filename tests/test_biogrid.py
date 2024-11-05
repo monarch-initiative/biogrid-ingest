@@ -7,7 +7,7 @@ from koza.utils.testing_utils import mock_koza  # noqa: F401
 @pytest.fixture
 def source_name():
     """Name of BioGRID protein links ingest."""
-    return "biogrid"
+    return "biogrid_gene_to_gene"
 
 
 @pytest.fixture
