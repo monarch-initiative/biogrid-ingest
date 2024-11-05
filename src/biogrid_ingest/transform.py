@@ -3,7 +3,7 @@ from koza.cli_utils import get_koza_app
 from biolink_model.datamodel.pydanticmodel_v2 import PairwiseGeneToGeneInteraction, KnowledgeLevelEnum, AgentTypeEnum
 from biogrid_util import get_gene_id, get_evidence, get_publication_ids
 
-koza_app = get_koza_app("biogrid")
+koza_app = get_koza_app("biogrid_gene_to_gene")
 
 while (row := koza_app.get_row()) is not None:
 
