@@ -1,4 +1,4 @@
-name: 'biogridi_gene_to_gene'
+name: 'biogrid_gene_to_gene'
 
 format: 'csv'
 delimiter: '\t'
