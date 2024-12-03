@@ -2,6 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://monarch-initiative.github.io/biogrid-ingest/</loc>
-         <lastmod>2024-11-14</lastmod>
+         <lastmod>2024-12-03</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-initiative.github.io/biogrid-ingest/biogrid/</loc>
+         <lastmod>2024-12-03</lastmod>
     </url>
 </urlset>
