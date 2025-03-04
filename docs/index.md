@@ -1,10 +1,10 @@
-# BioGRID
+# BioGRID ingest
 
 ## Overview
 
 [BioGRID](https://thebiogrid.org/) is a database of Protein, Genetic and Chemical Interactions, a biomedical interaction repository with data compiled through comprehensive curation efforts. The current index searches thousands of publications extracting millions of protein and genetic interactions, thousands of chemical interactions and over a million post translational modifications from major model organism species.
 
-## Source File
+## Source data
 
 Data columns (defined [here](https://wiki.thebiogrid.org/doku.php/psi_mitab_file)) in the [Bulk BioGrid data file](https://downloads.thebiogrid.org/File/BioGRID/Release-Archive/BIOGRID-4.4.226/BIOGRID-ALL-4.4.226.mitab.zip) are as follows:
 
@@ -44,30 +44,23 @@ with a typical row looking like:
 
 (note: column 15 of this row doesn't report a confidence value).
 
-This ingest only uses columns 1, 2 and 9 to generate its output.
+This ingest uses columns 1, 2, 7 and 9 to generate its output.
 
-## Biolink classes and properties captured
+## Generated Biolink classes
 
-### Concept Nodes
+### **[biolink:PairwiseGeneToGeneInteraction](https://biolink.github.io/biolink-model/PairwiseGeneToGeneInteraction/)**
+| Property | Value | Notes |
+| -------- | ----- | ----- |
+| id | UUID ||
+| subject | CURIE | Genes are only captured from [NCBI](https://bioregistry.io/registry/ncbigene) or [UniProt](https://bioregistry.io/registry/uniprot). |
+| predicate | [`interacts_with`](https://biolink.github.io/biolink-model/interacts_with/) ||
+| object | CURIE | See `subject`. |
+| has_evidence | CURIE | ECO code URIs derived `Interaction Detection Method` column. |
+| publications | CURIE list | Pubmed URIs derived `Publication Identifiers` column. |
+| aggregating_knowledge_source | `infores:monarchinitiative` ||
+| primary_knowledge_source | `infores:biogrid` ||
 
-The statement 'subject' (column 1) and 'object' (column 2) nodes are both genes:
-
-* **biolink:Gene**
-  * id (NCBIGene Entrez ID)
-
-### Associations
-
-* **biolink:PairwiseGeneToGeneInteraction**:
-    * id (random uuid)
-    * subject (gene.id)
-    * predicate (interacts_with)
-    * object (gene.id)
-    * has_evidence (ECO codes)
-    * publications (LIST[Pubmed ID])
-    * aggregating_knowledge_source (["infores:monarchinitiative"])
-    * primary_knowledge_source ("infores:biogrid")
-
-## Citations
+## Citation
 
 ### Most Recent
 
