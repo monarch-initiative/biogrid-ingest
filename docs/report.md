@@ -1,4 +1,4 @@
-# biogrid-ingest Report
+# Graph report
 
 {{ get_nodes_report() }}
 

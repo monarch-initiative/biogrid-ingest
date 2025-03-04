@@ -1,4 +1,4 @@
-# BioGRID ingest
+# About
 
 ## Overview
 

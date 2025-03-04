@@ -4,9 +4,9 @@ site_name: 'BioGRID ingest'
 site_url: 'https://monarch-initiative.github.io/biogrid-ingest/'
 
 ### Optional: Uncomment the following line to customize the navigation bar
-nav:
-  - About: 'index.md'
-  - Graph report: 'report.md'
+# nav:
+  #- About: 'index.md'
+  #- Graph report: 'report.md'
 
 theme:
     name: 'material'
