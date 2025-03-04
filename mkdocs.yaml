@@ -1,10 +1,12 @@
 repo_name: 'monarch-initiative/biogrid-ingest'
 repo_url: 'https://github.com/monarch-initiative/biogrid-ingest'
-site_name: 'biogrid-ingest'
+site_name: 'BioGRID ingest'
 site_url: 'https://monarch-initiative.github.io/biogrid-ingest/'
 
 ### Optional: Uncomment the following line to customize the navigation bar
-# nav:
+nav:
+  - About: 'index.md'
+  - Graph report: 'report.md'
 
 theme:
     name: 'material'
