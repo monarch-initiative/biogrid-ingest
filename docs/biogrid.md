@@ -1,8 +1,10 @@
 # BioGRID
 
-BioGRID is a database of Protein, Genetic and Chemical Interactions, a biomedical interaction repository with data compiled through comprehensive curation efforts. The current index searches thousands of publications extracting millions of protein and genetic interactions, thousands of chemical interactions and over a million post translational modifications from major model organism species.
+## Overview
 
-### Source File
+[BioGRID](https://thebiogrid.org/) is a database of Protein, Genetic and Chemical Interactions, a biomedical interaction repository with data compiled through comprehensive curation efforts. The current index searches thousands of publications extracting millions of protein and genetic interactions, thousands of chemical interactions and over a million post translational modifications from major model organism species.
+
+## Source File
 
 Data columns (defined [here](https://wiki.thebiogrid.org/doku.php/psi_mitab_file)) in the [Bulk BioGrid data file](https://downloads.thebiogrid.org/File/BioGRID/Release-Archive/BIOGRID-4.4.226/BIOGRID-ALL-4.4.226.mitab.zip) are as follows:
 
@@ -42,18 +44,18 @@ with a typical row looking like:
 
 (note: column 15 of this row doesn't report a confidence value).
 
-The BioGRID ingest only uses columns 1, 2 and 9 to generate its output
+This ingest only uses columns 1, 2 and 9 to generate its output.
 
-### Biolink classes and properties captured
+## Biolink classes and properties captured
 
-#### Concept Nodes
+### Concept Nodes
 
 The statement 'subject' (column 1) and 'object' (column 2) nodes are both genes:
 
 * **biolink:Gene**
   * id (NCBIGene Entrez ID)
 
-#### Associations
+### Associations
 
 * **biolink:PairwiseGeneToGeneInteraction**:
     * id (random uuid)

@@ -2,7 +2,7 @@
 
 | [Documentation](https://monarch-initiative.github.io/biogrid-ingest) |
 
-BioGRID ingest.
+Ingest of data from [BioGRID database of protein, genetic, and chemical interactions](https://thebiogrid.org/) for the [Monarch Knowledge Graph](https://monarchinitiative.org/).
 
 ## Requirements
 
