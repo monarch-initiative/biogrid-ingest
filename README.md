@@ -1,65 +1,41 @@
 # biogrid-ingest
 
-| [Documentation](https://monarch-initiative.github.io/biogrid-ingest) |
-
-BioGRID ingest.
+BioGRID ingest for gene-to-gene interactions using MITAB format data.
 
 ## Requirements
 
 - Python >= 3.10
-- [Poetry](https://python-poetry.org/docs/#installation)
-
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
+- [just](https://github.com/casey/just#installation)
 
 ## Installation
 
 ```bash
 cd biogrid-ingest
-make install
-# or
-poetry install
-```
-
-> **Note** that the `make install` command is just a convenience wrapper around `poetry install`.
-
-Once installed, you can check that everything is working as expected:
-
-```bash
-# Run the pytest suite
-make test
-# Download the data and run the Koza transform
-make download
-make run
+just install
 ```
 
 ## Usage
 
-This project is set up with a Makefile for common tasks.  
-To see available options:
+To see available commands:
 
 ```bash
-make help
+just
 ```
 
 ### Download and Transform
 
-Download the data for the biogrid_ingest transform:
+Run the full pipeline (download + transform):
 
 ```bash
-poetry run biogrid_ingest download
+just run
 ```
 
-To run the Koza transform for biogrid-ingest:
+Or run individual steps:
 
 ```bash
-poetry run biogrid_ingest transform
-```
-
-To see available options:
-
-```bash
-poetry run biogrid_ingest download --help
-# or
-poetry run biogrid_ingest transform --help
+just download    # Download BioGRID MITAB data
+just transform-all  # Run all transforms
 ```
 
 ### Testing
@@ -67,16 +43,15 @@ poetry run biogrid_ingest transform --help
 To run the test suite:
 
 ```bash
-make test
+just test
 ```
+
+## Data Source
+
+This ingest processes [BioGRID](https://thebiogrid.org/) interaction data in MITAB format,
+creating gene-to-gene interaction edges with evidence codes derived from interaction
+detection methods.
 
 ---
 
-> This project was generated using [monarch-initiative/cookiecutter-monarch-ingest](https://github.com/monarch-initiative/cookiecutter-monarch-ingest).  
-> Keep this project up to date using cruft by occasionally running in the project directory:
->
-> ```bash
-> cruft update
-> ```
->
-> For more information, see the [cruft documentation](https://cruft.github.io/cruft/#updating-a-project)
+> This project uses the [monarch-initiative/cookiecutter-monarch-ingest](https://github.com/monarch-initiative/cookiecutter-monarch-ingest) template.

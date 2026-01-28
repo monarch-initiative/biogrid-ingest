@@ -1,12 +1,13 @@
 import uuid
-from koza.cli_utils import get_koza_app
-from biolink_model.datamodel.pydanticmodel_v2 import PairwiseGeneToGeneInteraction, KnowledgeLevelEnum, AgentTypeEnum
-from biogrid_util import get_gene_id, get_evidence, get_publication_ids
 
-koza_app = get_koza_app("biogrid_gene_to_gene")
+import koza
+from biolink_model.datamodel.pydanticmodel_v2 import AgentTypeEnum, KnowledgeLevelEnum, PairwiseGeneToGeneInteraction
 
-while (row := koza_app.get_row()) is not None:
+from biogrid_util import get_evidence, get_gene_id, get_publication_ids
 
+
+@koza.transform_record()
+def transform(row: dict) -> PairwiseGeneToGeneInteraction | None:
     gid_a = get_gene_id(row['ID Interactor A'])
     gid_b = get_gene_id(row['ID Interactor B'])
 
@@ -34,4 +35,6 @@ while (row := koza_app.get_row()) is not None:
             agent_type=AgentTypeEnum.not_provided,
         )
 
-        koza_app.write(association)
+        return association
+
+    return None

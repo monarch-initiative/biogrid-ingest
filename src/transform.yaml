@@ -1,0 +1,45 @@
+name: "biogrid_gene_to_gene"
+
+reader:
+  name: "biogrid_reader"
+  files:
+    - "../data/biogrid/biogrid.mitab.zip"
+  format: "csv"
+  delimiter: "\t"
+  header_prefix: "#"
+  columns:
+    - "ID Interactor A"
+    - "ID Interactor B"
+    - "Alt IDs Interactor A"
+    - "Alt IDs Interactor B"
+    - "Aliases Interactor A"
+    - "Aliases Interactor B"
+    - "Interaction Detection Method"
+    - "Publication 1st Author"
+    - "Publication Identifiers"
+    - "Taxid Interactor A"
+    - "Taxid Interactor B"
+    - "Interaction Types"
+    - "Source Database"
+    - "Interaction Identifiers"
+    - "Confidence Values"
+
+transform:
+  name: "biogrid_transform"
+  mode: "flat"
+
+writer:
+  name: "biogrid_writer"
+  node_properties: []
+  edge_properties:
+    - "id"
+    - "category"
+    - "subject"
+    - "predicate"
+    - "object"
+    - "has_evidence"
+    - "publications"
+    - "primary_knowledge_source"
+    - "aggregator_knowledge_source"
+    - "knowledge_level"
+    - "agent_type"
