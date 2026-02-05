@@ -1,24 +1,15 @@
-"""Unit tests for BioGRID protein links ingest."""
+"""Unit tests for BioGRID gene-to-gene interaction ingest."""
 
 import pytest
-from koza.utils.testing_utils import mock_koza  # noqa: F401
+from biolink_model.datamodel.pydanticmodel_v2 import PairwiseGeneToGeneInteraction
 
-
-@pytest.fixture
-def source_name():
-    """Name of BioGRID protein links ingest."""
-    return "biogrid_gene_to_gene"
-
-
-@pytest.fixture
-def script():
-    """Path to BioGRID protein links ingest script."""
-    return "./src/biogrid_ingest/transform.py"
+from biogrid_util import get_evidence, get_gene_id, get_publication_ids
+from transform import transform
 
 
 @pytest.fixture
 def basic_row():
-    """Generate an example interactions data row."""
+    """An example BioGRID MITAB interaction row."""
     return {
         "ID Interactor A": "entrez gene/locuslink:6416",
         "ID Interactor B": "entrez gene/locuslink:2318",
@@ -46,20 +37,142 @@ def basic_row():
 
 
 @pytest.fixture
-def basic_pl(mock_koza, source_name, basic_row, script):
-    """Create a mock Koza instance using pytest fixtures."""
-    return mock_koza(name=source_name, data=basic_row, transform_code=script)
+def basic_entity(basic_row):
+    return transform(None, basic_row)
 
 
-def test_association(basic_pl):
-    association = basic_pl[0]
-    assert association
-    assert association.subject == "NCBIGene:6416"
-    assert association.object == "NCBIGene:2318"
-    assert association.predicate == "biolink:interacts_with"
-    assert "PMID:9006895" in association.publications
-    assert "PMID:10727406" in association.publications
-    assert len(association.has_evidence) == 1
-    assert "ECO:0000024" in association.has_evidence
-    assert association.primary_knowledge_source == "infores:biogrid"
-    assert "infores:monarchinitiative" in association.aggregator_knowledge_source
+def test_entity_type(basic_entity):
+    entity = basic_entity[0]
+    assert entity
+    assert isinstance(entity, PairwiseGeneToGeneInteraction)
+
+
+def test_subject(basic_entity):
+    entity = basic_entity[0]
+    assert entity.subject == "NCBIGene:6416"
+
+
+def test_object(basic_entity):
+    entity = basic_entity[0]
+    assert entity.object == "NCBIGene:2318"
+
+
+def test_predicate(basic_entity):
+    entity = basic_entity[0]
+    assert entity.predicate == "biolink:interacts_with"
+
+
+def test_evidence(basic_entity):
+    entity = basic_entity[0]
+    assert entity.has_evidence == ["ECO:0000024"]
+
+
+def test_publications(basic_entity):
+    entity = basic_entity[0]
+    assert "PMID:9006895" in entity.publications
+    assert "PMID:10727406" in entity.publications
+
+
+def test_knowledge_source(basic_entity):
+    entity = basic_entity[0]
+    assert entity.primary_knowledge_source == "infores:biogrid"
+    assert entity.aggregator_knowledge_source == ["infores:monarchinitiative"]
+
+
+def test_knowledge_level(basic_entity):
+    entity = basic_entity[0]
+    assert entity.knowledge_level == "knowledge_assertion"
+    assert entity.agent_type == "not_provided"
+
+
+def test_uniprot_interaction():
+    """Test that UniProtKB identifiers are also accepted."""
+    row = {
+        "ID Interactor A": "uniprot/swiss-prot:P45985",
+        "ID Interactor B": "entrez gene/locuslink:2318",
+        "Interaction Detection Method": 'psi-mi:"MI:0018"(two hybrid)',
+        "Publication Identifiers": "pubmed:9006895",
+        "Taxid Interactor A": "taxid:9606",
+        "Taxid Interactor B": "taxid:9606",
+        "Interaction Types": 'psi-mi:"MI:0407"(direct interaction)',
+        "Source Database": 'psi-mi:"MI:0463"(biogrid)',
+        "Interaction Identifiers": "biogrid:999",
+        "Confidence Values": "",
+        "Alt IDs Interactor A": "",
+        "Alt IDs Interactor B": "",
+        "Aliases Interactor A": "",
+        "Aliases Interactor B": "",
+        "Publication 1st Author": "",
+    }
+    entities = transform(None, row)
+    assert len(entities) == 1
+    assert entities[0].subject == "UniProtKB:P45985"
+
+
+def test_non_ncbi_interaction_filtered():
+    """Test that interactions with non-NCBIGene/UniProtKB IDs are filtered out."""
+    row = {
+        "ID Interactor A": "biogrid:112315",
+        "ID Interactor B": "biogrid:108607",
+        "Interaction Detection Method": 'psi-mi:"MI:0018"(two hybrid)',
+        "Publication Identifiers": "pubmed:9006895",
+        "Taxid Interactor A": "taxid:9606",
+        "Taxid Interactor B": "taxid:9606",
+        "Interaction Types": 'psi-mi:"MI:0407"(direct interaction)',
+        "Source Database": 'psi-mi:"MI:0463"(biogrid)',
+        "Interaction Identifiers": "biogrid:999",
+        "Confidence Values": "",
+        "Alt IDs Interactor A": "",
+        "Alt IDs Interactor B": "",
+        "Aliases Interactor A": "",
+        "Aliases Interactor B": "",
+        "Publication 1st Author": "",
+    }
+    entities = transform(None, row)
+    assert len(entities) == 0
+
+
+# Utility function tests
+
+
+def test_get_gene_id_entrez():
+    assert get_gene_id("entrez gene/locuslink:6416") == "NCBIGene:6416"
+
+
+def test_get_gene_id_uniprot():
+    assert get_gene_id("uniprot/swiss-prot:P45985") == "UniProtKB:P45985"
+
+
+def test_get_gene_id_passthrough():
+    assert get_gene_id("biogrid:112315") == "biogrid:112315"
+
+
+def test_get_evidence_two_hybrid():
+    result = get_evidence('psi-mi:"MI:0018"(two hybrid)')
+    assert result == ["ECO:0000024"]
+
+
+def test_get_evidence_multiple_methods():
+    result = get_evidence('psi-mi:"MI:0018"(two hybrid)|psi-mi:"MI:0006"(pull down)')
+    assert "ECO:0000024" in result
+    assert "ECO:0000025" in result
+
+
+def test_get_evidence_empty():
+    assert get_evidence("") is None
+
+
+def test_get_evidence_unknown_method():
+    result = get_evidence('psi-mi:"MI:9999"(unknown method)')
+    assert result == ["ECO:0000006"]
+
+
+def test_get_publication_ids_single():
+    assert get_publication_ids("pubmed:9006895") == ["PMID:9006895"]
+
+
+def test_get_publication_ids_multiple():
+    result = get_publication_ids("pubmed:9006895|pubmed:10727406")
+    assert "PMID:9006895" in result
+    assert "PMID:10727406" in result
+    assert len(result) == 2

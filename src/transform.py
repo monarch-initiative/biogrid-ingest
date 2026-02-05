@@ -1,18 +1,19 @@
 import uuid
-from koza.cli_utils import get_koza_app
-from biolink_model.datamodel.pydanticmodel_v2 import PairwiseGeneToGeneInteraction, KnowledgeLevelEnum, AgentTypeEnum
-from biogrid_util import get_gene_id, get_evidence, get_publication_ids
 
-koza_app = get_koza_app("biogrid_gene_to_gene")
+import koza
+from biolink_model.datamodel.pydanticmodel_v2 import AgentTypeEnum, KnowledgeLevelEnum, PairwiseGeneToGeneInteraction
 
-while (row := koza_app.get_row()) is not None:
+from src.biogrid_util import get_evidence, get_gene_id, get_publication_ids
 
-    gid_a = get_gene_id(row['ID Interactor A'])
-    gid_b = get_gene_id(row['ID Interactor B'])
 
-    evidence = get_evidence(row['Interaction Detection Method'])
+@koza.transform_record()
+def transform(koza, row: dict) -> PairwiseGeneToGeneInteraction | None:
+    gid_a = get_gene_id(row["ID Interactor A"])
+    gid_b = get_gene_id(row["ID Interactor B"])
 
-    publications = get_publication_ids(row['Publication Identifiers'])
+    evidence = get_evidence(row["Interaction Detection Method"])
+
+    publications = get_publication_ids(row["Publication Identifiers"])
 
     # Only keep interactions using NCBIGene or UniProtKB identifiers, could also filter on taxid
     if (
@@ -34,4 +35,6 @@ while (row := koza_app.get_row()) is not None:
             agent_type=AgentTypeEnum.not_provided,
         )
 
-        koza_app.write(association)
+        return [association]
+
+    return []

@@ -50,7 +50,7 @@ def get_evidence(methods: str) -> Optional[List[str]]:
             if not method:
                 continue
             # databaseName:identifier(methodName)
-            method = method.rstrip(")").split('(')[-1]
+            method = method.rstrip(")").split("(")[-1]
             if method not in EVIDENCE_CODE_MAPPINGS.keys():
                 err_msg = (
                     f"Unknown interaction detection method '{method}'. "
