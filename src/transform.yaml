@@ -1,7 +1,6 @@
 name: "biogrid_gene_to_gene"
 
 reader:
-  name: "biogrid_reader"
   files:
     - "../data/biogrid/biogrid.mitab.zip"
   format: "csv"
@@ -25,11 +24,9 @@ reader:
     - "Confidence Values"
 
 transform:
-  name: "biogrid_transform"
   mode: "flat"
 
 writer:
-  name: "biogrid_writer"
   node_properties: []
   edge_properties:
     - "id"
