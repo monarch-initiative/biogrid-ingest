@@ -29,7 +29,7 @@ if __name__ == "__main__":
     )
 
     metadata = write_metadata(
-        ingest_name="biogrid_ingest",
+        ingest_name="biogrid-ingest",
         source_versions=get_source_versions(),
         transform_paths=transform_paths,
         artifacts=artifacts,

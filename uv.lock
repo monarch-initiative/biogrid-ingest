@@ -109,7 +109,7 @@ requires-dist = [
     { name = "biolink-model", specifier = ">=4.0.0" },
     { name = "kghub-downloader", specifier = ">=0.4.0" },
     { name = "koza", specifier = ">=2.0.0" },
-    { name = "kozahub-metadata-schema", editable = "../kozahub-metadata-schema" },
+    { name = "kozahub-metadata-schema", git = "https://github.com/monarch-initiative/kozahub-metadata-schema?rev=main" },
     { name = "loguru", specifier = ">=0.7.0" },
     { name = "requests", specifier = ">=2.28.0" },
 ]
@@ -1153,28 +1153,12 @@ wheels = [
 
 [[package]]
 name = "kozahub-metadata-schema"
-source = { editable = "../kozahub-metadata-schema" }
+version = "0.0.0.post1.dev0+265814e"
+source = { git = "https://github.com/monarch-initiative/kozahub-metadata-schema?rev=main#265814e60b043a94a5617c503e4c6b8cd584d9bb" }
 dependencies = [
     { name = "linkml-runtime" },
     { name = "pyyaml" },
     { name = "requests" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "linkml-runtime", specifier = ">=1.9.4" },
-    { name = "pyyaml" },
-    { name = "requests" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "jupyter", specifier = ">=1.0.0" },
-    { name = "linkml", specifier = ">=1.9.3" },
-    { name = "mkdocs-material", specifier = ">=8.2.8" },
-    { name = "mkdocs-mermaid2-plugin", specifier = ">=1.1.1" },
-    { name = "mkdocs-pymdownx-material-extras", specifier = ">=2.5.6" },
-    { name = "mknotebooks", specifier = ">=0.8.0" },
 ]
 
 [[package]]
