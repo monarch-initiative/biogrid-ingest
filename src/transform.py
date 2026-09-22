@@ -1,4 +1,3 @@
-import uuid
 
 import koza
 from biolink_model.datamodel.pydanticmodel_v2 import AgentTypeEnum, KnowledgeLevelEnum, PairwiseGeneToGeneInteraction
@@ -23,7 +22,6 @@ def transform(koza, row: dict) -> PairwiseGeneToGeneInteraction | None:
         or gid_b.startswith("UniProtKB:")
     ):
         association = PairwiseGeneToGeneInteraction(
-            id="uuid:" + str(uuid.uuid1()),
             subject=gid_a,
             predicate="biolink:interacts_with",
             object=gid_b,
